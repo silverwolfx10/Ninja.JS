@@ -10,7 +10,7 @@
  * @author Cleber de Moraes Goncalves <cleber.programmer>
  * @example
  *        
- *        Ninja.service('$component', [], function () {
+ *        Ninja.module('$component', [], function () {
  *          return {
  *            // code here ...
  *          };
@@ -25,7 +25,7 @@
  *        });
  *        
  */
-(function ($modules, $services, $cache) {
+(function ($modules, $components, $cache) {
   
   /**
    * Construtor de objeto que descreve as referencias das dependencias
@@ -60,7 +60,7 @@
    *        
    */
   function inject(name) {
-    return $cache[name] || ($cache[name] = mapper($services[name] || referenceError(name)));
+    return $cache[name] || ($cache[name] = mapper($components[name] || referenceError(name)));
   }
   
   /**
@@ -112,21 +112,21 @@
    *
    * @public
    * @static
-   * @method service
+   * @method module
    * @param {String} name Nome do servico
    * @param {Array} dependencies Colecao de dependencias que sera injetado na funcao callback
    * @param {Function} callback Funcao que recebe como argumento dependencias
    * @example
    *        
-   *        Ninja.service('$component', [], function () {
+   *        Ninja.module('$component', [], function () {
    *          return {
    *            // code here ...
    *          };
    *        });
    *        
    */
-  ninja.service = function (name, dependencies, callback) {
-    Object.defineProperty($services, name, { value: build(dependencies, callback) });
+  ninja.module = function (name, dependencies, callback) {
+    Object.defineProperty($components, name, { value: build(dependencies, callback) });
   };
   
   /**
@@ -141,7 +141,7 @@
    *
    */
   function referenceError(name) {
-    throw new ReferenceError('The ' + name + ' service is not defined');
+    throw new ReferenceError('The ' + name + ' module is not defined');
   }
   
   /**
