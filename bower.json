@@ -1,0 +1,20 @@
+"name": "ninja.js",
+  "description": "Ninja é uma forma simples de organizar seu codigo javascript em modulos",
+  "main": [
+    "ninja.js"
+  ],
+  "keywords": [
+    "javascript"
+  ],
+  "authors": [
+    "Cleber de Moraes Goncalves <cleber.programmer@hotmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Bibizzy/Ninja.JS.git"
+  }
+}
