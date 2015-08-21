@@ -1,8 +1,9 @@
-"name": "ninja.js",
+{
+  "name": "Ninja.JS",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Bibizzy/Ninja.JS",
   "description": "Ninja é uma forma simples de organizar seu codigo javascript em modulos",
-  "main": [
-    "ninja.js"
-  ],
+  "main": "ninja.js",
   "keywords": [
     "javascript"
   ],
@@ -11,10 +12,10 @@
   ],
   "license": "MIT",
   "ignore": [
-    "README.md"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Bibizzy/Ninja.JS.git"
-  }
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
