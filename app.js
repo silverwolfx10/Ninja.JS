@@ -60,7 +60,7 @@
    *        
    */
   function inject(name) {
-    return $cache[name] || ($cache[name] = mapper($services[name]));
+    return $cache[name] || ($cache[name] = mapper($services[name] || referenceError(name)));
   }
   
   /**
@@ -128,6 +128,21 @@
   ninja.service = function (name, dependencies, callback) {
     Object.defineProperty($services, name, { value: build(dependencies, callback) });
   };
+  
+  /**
+   * Dispara um ReferenceError quando nao encontrado um servico
+   *
+   * @private
+   * @method referenceError
+   * @param {String} name Nome do servico
+   * @example
+   *
+   *        referenceError('$curry');
+   *
+   */
+  function referenceError(name) {
+    throw new ReferenceError('The ' + name + ' service is not defined');
+  }
   
   /**
    * Aguarda o termino do evento load do window para iniciar a execucao
