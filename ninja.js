@@ -25,7 +25,7 @@
  *        });
  *        
  */
-(function ($modules, $components, $cache) {
+(function ($cache, $components, $global, $modules) {
   
   /**
    * Construtor de objeto que descreve as referencias das dependencias
@@ -157,6 +157,6 @@
    * Revelacao do objeto Ninja, encapsulando a visibilidade das funcoes
    * privadas
    */
-  Object.defineProperty(window, 'Ninja', { value: ninja });
+  Object.defineProperty($global, 'Ninja', { value: ninja });
 
-})([], {}, {});
+})( {}, {}, this, []);
