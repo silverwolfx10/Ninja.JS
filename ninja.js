@@ -25,7 +25,7 @@
  *        });
  *        
  */
-(function ($cache, $components, $global, $modules) {
+(function ($cache, $configs, $components, $global, $modules) {
   
   /**
    * Construtor de objeto que descreve as referencias das dependencias
@@ -46,6 +46,21 @@
   }
   
   /**
+   * Inicializa a execucao dos modules e ou configs
+   * 
+   * @private
+   * @method init
+   * @param {Array} collection Array dos modulos ou configs
+   * @example
+   * 
+   *        init($modules);
+   * 
+   */
+  function init(collection) {
+    collection.forEach(function (item) { setTimeout(mapper.bind(null, item), 0); });
+  }
+  
+  /**
    * Retorna uma dependencia atraves do seu identificador, esta funcao é
    * utilizado para mapear as dependencias dos servico e modulos. Uma vez mapeado
    * esta dependencia sera armazenado em cache
@@ -61,6 +76,23 @@
    */
   function inject(name) {
     return $cache[name] || ($cache[name] = mapper($components[name] || referenceError(name)));
+  }
+  
+  /**
+   * Adiciona as dependencias a o callback a colecao de moduless o configs
+   * 
+   * @private
+   * @method inject
+   * @param {Array} collection Colecao de depencencia
+   * @param {Array} dependencies Dependencias para a execucao do module ou config
+   * @param {Funcao} callback Funcao callback do modulo ou config
+   * @example
+   * 
+   *        push($modules, dependencies, callback);
+   * 
+   */
+  function push(collection, dependencies, callback) {
+    collection.push(build(dependencies, callback));
   }
   
   /**
@@ -103,8 +135,27 @@
    *        
    */
   function ninja(dependencies, callback) {
-    $modules.push(build(dependencies, callback));
+    push($modules, dependencies, callback);
   }
+  
+  /**
+   * Antes da execucao dos modulos o config carregas os modulos
+   * para possiveis configuracoes
+   * 
+   * @private
+   * @method config
+   * @param {Array} dependencies Colecao de dependencias que sera injetado na funcao callback
+   * @param {Function} callback Funcao que recebe como argumento dependencias
+   * @example
+   * 
+   *        this.Ninja.config(['$interceptor', '$errorAlert'], function ($interceptor, $errorAlert) {
+   *          $interceptor.push($errorAlert);
+   *        });
+   * 
+   */
+  ninja.config = function (dependencies, callback) {
+    push($configs, dependencies, callback);
+  };
   
   /**
    * Registra um servico injetando suas respectivas dependencias, servindo
@@ -150,7 +201,7 @@
    * carregados nao se precupado com a ordem de precedencia
    */
   window.addEventListener('load', function () {
-    $modules.forEach(function (item) { setTimeout(mapper.bind(null, item), 0); });
+    [$configs, $modules].forEach(init);
   });
   
   /**
@@ -159,4 +210,4 @@
    */
   Object.defineProperty($global, 'Ninja', { value: ninja });
 
-})( {}, {}, this, []);
+})( {}, [], {}, this, []);
