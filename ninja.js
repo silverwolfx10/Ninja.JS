@@ -25,7 +25,7 @@
  *        });
  *        
  */
-(function ($cache, $configs, $components, $global, $modules) {
+(function ($cache, $setups, $components, $global, $modules) {
   
   /**
    * Construtor de objeto que descreve as referencias das dependencias
@@ -46,11 +46,11 @@
   }
   
   /**
-   * Inicializa a execucao dos modules e ou configs
+   * Inicializa a execucao dos modules e ou setups
    * 
    * @private
    * @method init
-   * @param {Array} collection Array dos modulos ou configs
+   * @param {Array} collection Array dos modulos ou setups
    * @example
    * 
    *        init($modules);
@@ -79,13 +79,13 @@
   }
   
   /**
-   * Adiciona as dependencias a o callback a colecao de moduless o configs
+   * Adiciona as dependencias a o callback a colecao de moduless o setups
    * 
    * @private
    * @method inject
    * @param {Array} collection Colecao de depencencia
-   * @param {Array} dependencies Dependencias para a execucao do module ou config
-   * @param {Funcao} callback Funcao callback do modulo ou config
+   * @param {Array} dependencies Dependencias para a execucao do module ou setup
+   * @param {Funcao} callback Funcao callback do modulo ou setup
    * @example
    * 
    *        push($modules, dependencies, callback);
@@ -139,25 +139,6 @@
   }
   
   /**
-   * Antes da execucao dos modulos o config carregas os modulos
-   * para possiveis configuracoes
-   * 
-   * @private
-   * @method config
-   * @param {Array} dependencies Colecao de dependencias que sera injetado na funcao callback
-   * @param {Function} callback Funcao que recebe como argumento dependencias
-   * @example
-   * 
-   *        this.Ninja.config(['$interceptor', '$errorAlert'], function ($interceptor, $errorAlert) {
-   *          $interceptor.push($errorAlert);
-   *        });
-   * 
-   */
-  ninja.config = function (dependencies, callback) {
-    push($configs, dependencies, callback);
-  };
-  
-  /**
    * Registra um servico injetando suas respectivas dependencias, servindo
    * como um encapsulador deste servico
    *
@@ -181,6 +162,25 @@
   };
   
   /**
+   * Antes da execucao dos modulos o setup carregas os modulos
+   * para possiveis configuracoes
+   * 
+   * @private
+   * @method setup
+   * @param {Array} dependencies Colecao de dependencias que sera injetado na funcao callback
+   * @param {Function} callback Funcao que recebe como argumento dependencias
+   * @example
+   * 
+   *        this.Ninja.setup(['$interceptor', '$errorAlert'], function ($interceptor, $errorAlert) {
+   *          $interceptor.push($errorAlert);
+   *        });
+   * 
+   */
+  ninja.setup = function (dependencies, callback) {
+    push($setups, dependencies, callback);
+  };
+  
+  /**
    * Dispara um ReferenceError quando nao encontrado um servico
    *
    * @private
@@ -201,7 +201,7 @@
    * carregados nao se precupado com a ordem de precedencia
    */
   window.addEventListener('load', function () {
-    [$configs, $modules].forEach(init);
+    [$setups, $modules].forEach(init);
   });
   
   /**
